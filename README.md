@@ -37,6 +37,8 @@ $reader = new Reader();
 
 // Load the Rabobank CSV parser
 $reader->addParser( 'RabobankCSV', 'cyberwizzard\MT940\Parser\RabobankCSV' );
+// Load the ING parser
+$reader->addParser( 'ING', 'cyberwizzard\MT940\Parser\ING' );
 // Append the list of default bank parsers (optional)
 $reader->addParsers( $reader->getDefaultParsers() );
 
