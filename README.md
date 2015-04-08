@@ -8,8 +8,14 @@ You can install cyberwizzard/MT940 using Composer. You can read more about Compo
 [http://packagist.org](http://packagist.org "Packagist"). First install Composer for your project using the instructions on the
 Packagist home page, then define your dependency on cyberwizzard/MT940 in your `composer.json` file.
 
+Note: currently this library is not published on Packagist; as soon as it is cleaned up, it will get published and there will be no need to specify a repository.
+
 ```json
     {
+        "repositories": [{
+            "type": "vcs",
+            "url": "https://github.com/cyberwizzard/mt940"
+        }],
         "require": {
             "cyberwizzard/mt940": ">=0.3"
         }
