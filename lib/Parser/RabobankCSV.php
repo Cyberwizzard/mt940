@@ -3,8 +3,8 @@
 /*
  * This file is meant as an extension of the Jejik\MT940 library to provide CSV parsing for Rabobank CSV exports
  *
- * Copyright (c) 2012 Sander Marechal <s.marechal@jejik.com>
- * Licensed under the MIT license
+ * Copyright (c) 2015 Berend Dekens <cyberwizzard@gmail.com>
+ * Licensed under the GNU GPLv2 license
  *
  * For the full copyright and license information, please see the LICENSE
  * file that was distributed with this source code.
@@ -13,11 +13,6 @@
 namespace cw\MT940\Parser;
 use Jejik\MT940\Parser\AbstractParser;
 
-/**
- * Parser for Rabobank CSV documents
- *
- * @author Berend Dekens <cyberwizzard@gmail.com>
- */
 class RabobankCSV extends AbstractParser
 {
     // Fields as specified by the 2013 CSV format from the Rabobank
@@ -48,8 +43,10 @@ class RabobankCSV extends AbstractParser
     {
         $line = strtok($text, "\n");
         $fields = str_getcsv($line);
-        return (count($fields) == 19 && ($fields[self::F_BY_AF_CODE] == 'C' || $fields[self::F_BY_AF_CODE] == 'D'));    // Rabobank CSV uses 19 fields and the 4th field denotes Credit or Debet
-    }
+
+	// TODO: When more CSV formats are to be supported, more format checks could be added
+	// Rabobank CSV uses 19 fields and the 4th field denotes Credit or Debet
+        return (count($fields) == 19 && ($fields[self::F_BY_AF_CODE] == 'C' || $fields[self::F_BY_AF_CODE] == 'D'));       }
 
     /**
      * Parse a CSV formatted text file from the Rabobank
@@ -80,14 +77,14 @@ class RabobankCSV extends AbstractParser
         $account = $this->reader->createAccount(null);
 
         if (!($account instanceof Jejik\MT940\AccountInterface)) {
-        //    return null;
+		return null;
         }
 
         $account->setNumber($fields[self::F_REKENINGNUMMER_REKENINGHOUDER]);
         $statement = $this->reader->createStatement($account, $statement_number);
 
-        if (!($statement instanceof StatementInterface)) {
-            //return null;
+        if (!($statement instanceof Jejik\MT940\StatementInterface)) {
+		return null;
         }
 
         $statement->setAccount($account)

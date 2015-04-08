@@ -51,6 +51,6 @@ For more information, see the [jejik/MT940 repository](https://github.com/sander
 
 ## Disclaimer
 Use this parser at your own risk. While the utmost care is taken to design parsers which are fully compliant with the
-official bank statement formats, most of these seem to have quirks.
+official bank statement formats, most of the implementations from the banks themselves seem to have quirks.
 
 This parser is in use in a private project and as such is tested regularly.
