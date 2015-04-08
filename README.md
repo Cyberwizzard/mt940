@@ -31,16 +31,15 @@ a PSR-0 compliant autoloader to load the cyberwizzard/MT940 classes. Composer pr
 <?php
 
 use Jejik\MT940\Reader;
-use cyberwizzard\MT940\Parser\RabobankCSV;
 
 $reader = new Reader();
 
 // Load the Rabobank CSV parser
 $reader->addParser( 'RabobankCSV', 'cyberwizzard\MT940\Parser\RabobankCSV' );
-// Load the ING parser
-$reader->addParser( 'ING', 'cyberwizzard\MT940\Parser\ING' );
 // Append the list of default bank parsers (optional)
 $reader->addParsers( $reader->getDefaultParsers() );
+// Load the Ing parser from this repository to replace the one from jejik/MT940
+$reader->addParser( 'Ing', 'cyberwizzard\MT940\Parser\Ing' );
 
 $statements = $reader->getStatements(file_get_contents('mt940.txt'));
 

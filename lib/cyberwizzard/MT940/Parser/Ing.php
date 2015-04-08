@@ -10,7 +10,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Jejik\MT940\Parser;
+namespace cyberwizzard\MT940\Parser;
+use Jejik\MT940\Parser\AbstractParser;
 
 /**
  * Parser for ING documents
