@@ -89,7 +89,7 @@ class Ing extends AbstractParser
         $payload = str_replace("\r\n", "", $lines[1]);
 
         // Regex for the 'x' character class of input for MT940. Note: omitted are the single quote (') and forward slash (/) as they make it hard to parse input and usually are not used.
-        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,+\{\}\:\s]';
+        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s]';
         // Subfields for CNTP: account number / BIC number / Name / City
         $regex = '/\/CNTP\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\//';
 
@@ -111,7 +111,7 @@ class Ing extends AbstractParser
         $payload = str_replace("\r\n", "", $lines[1]);
 
         // Regex for the 'x' character class of input for MT940. Note: omitted are the single quote (') and forward slash (/) as they make it hard to parse input and usually are not used.
-        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,+\{\}\:\s]';
+        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s]';
         // Subfields for CNTP: account number / BIC number / Name / City
         $regex = '/\/CNTP\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\//';
 
