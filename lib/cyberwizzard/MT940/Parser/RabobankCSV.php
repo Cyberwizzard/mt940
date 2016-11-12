@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace cw\MT940\Parser;
+namespace cyberwizzard\MT940\Parser;
 use Jejik\MT940\Parser\AbstractParser;
 
 class RabobankCSV extends AbstractParser

@@ -10,7 +10,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Jejik\MT940\Parser;
+namespace cyberwizzard\MT940\Parser;
+use Jejik\MT940\Parser\AbstractParser;
 
 /**
  * Parser for ING documents
@@ -138,13 +139,18 @@ class Ing extends AbstractParser
         if(is_null($description)) return null;
 
         // because we also match CS2 line endings within the payload, remove these before continuing
-        $payload = str_replace("\r\n", "", $description);
+        $payload = str_replace($this->le, "", $description);
 
         // Regex for the 'x' character class of input for MT940. Note: omitted are the single quote (') and forward slash (/) as they make it hard to parse input and usually are not used.
-        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,+\{\}\:\s]';
+        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s]';
+        // We observed a couple transactions with a / in the second field - this makes is impossible to maintain the 940 format
+        // if other fields can be appended later. From emperical proof it looks like this field is always the last and as such
+        // we can allow slashes in the second field.
+        // Note: if other fields are added afterwards, they will due to this be merged into the description!
+        $swift_regex_x2 = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s\/]';
         // Subfields for unstructured description (USTD): description
         // Note: the ING specifies that USTD only has a description field but in practice they specify a type as well, so we extract the next two subfields just in case
-        $regex = '/\/USTD\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)/';
+        $regex = '/\/USTD\/('.$swift_regex_x.'*)\/('.$swift_regex_x2.'*)\//';
 
         if (preg_match($regex, $payload, $match)) {
             return $match[1] . $match[2];
@@ -154,7 +160,7 @@ class Ing extends AbstractParser
         $regex = '/\/STRD\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\//';
 
         if (preg_match($regex, $payload, $match)) {
-            //return $match[2];
+            return $match[2];
         }
 
         // Fallback, no clue just put the entire line in there
