@@ -1,7 +1,7 @@
 {
     "name": "cyberwizzard/mt940",
     "type": "library",
-    "description": "Addon for the MT940 bank statement parser to add Rabobank CSV support using PHP 5.3",
+    "description": "Addon for the MT940 bank statement parser to add Rabobank CSV and updated ING MT940 support using PHP 5.3",
     "keywords": ["mt940", "parser", "parsing"],
     "license": "GNU GPLv2",
     "authors": [{
