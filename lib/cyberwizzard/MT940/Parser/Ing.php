@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the Jejik\MT940 library
+ * This file is part of the Cyberwizzard\MT940 library which is a fork of the Jejik\MT940 library
  *
+ * Copyright (c) 2017 Berend Dekens <cyberwizzard@gmail.com>
  * Copyright (c) 2012 Sander Marechal <s.marechal@jejik.com>
  * Licensed under the MIT license
  *
@@ -16,6 +17,7 @@ use Jejik\MT940\Parser\AbstractParser;
 /**
  * Parser for ING documents
  *
+ * @author Berend Dekens <cyberwizzard@gmail.com>
  * @author Sander Marechal <s.marechal@jejik.com>
  */
 class Ing extends AbstractParser
@@ -90,7 +92,7 @@ class Ing extends AbstractParser
         $payload = str_replace("\r\n", "", $lines[1]);
 
         // Regex for the 'x' character class of input for MT940. Note: omitted are the single quote (') and forward slash (/) as they make it hard to parse input and usually are not used.
-        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s]';
+        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,+\{\}\:\s]';
         // Subfields for CNTP: account number / BIC number / Name / City
         $regex = '/\/CNTP\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\//';
 
@@ -112,7 +114,7 @@ class Ing extends AbstractParser
         $payload = str_replace("\r\n", "", $lines[1]);
 
         // Regex for the 'x' character class of input for MT940. Note: omitted are the single quote (') and forward slash (/) as they make it hard to parse input and usually are not used.
-        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s]';
+        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,+\{\}\:\s]';
         // Subfields for CNTP: account number / BIC number / Name / City
         $regex = '/\/CNTP\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\/('.$swift_regex_x.'*)\//';
 
@@ -140,14 +142,15 @@ class Ing extends AbstractParser
 
         // because we also match CS2 line endings within the payload, remove these before continuing
         $payload = str_replace($this->le, "", $description);
+        //echo "payload: $payload<br>\n";
 
         // Regex for the 'x' character class of input for MT940. Note: omitted are the single quote (') and forward slash (/) as they make it hard to parse input and usually are not used.
-        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s]';
+        $swift_regex_x = '[0-9a-zA-Z\-\?\(\)\.,+\{\}\:\s]';
         // We observed a couple transactions with a / in the second field - this makes is impossible to maintain the 940 format
         // if other fields can be appended later. From emperical proof it looks like this field is always the last and as such
         // we can allow slashes in the second field.
-        // Note: if other fields are added afterwards, they will due to this be merged into the description!
-        $swift_regex_x2 = '[0-9a-zA-Z\-\?\(\)\.,\'+\{\}\:\s\/]';
+        // Note: if other fields are added afterwards, the will due to this be merged into the description!
+        $swift_regex_x2 = '[0-9a-zA-Z\-\?\(\)\.,+\{\}\:\s\/]';
         // Subfields for unstructured description (USTD): description
         // Note: the ING specifies that USTD only has a description field but in practice they specify a type as well, so we extract the next two subfields just in case
         $regex = '/\/USTD\/('.$swift_regex_x.'*)\/('.$swift_regex_x2.'*)\//';
