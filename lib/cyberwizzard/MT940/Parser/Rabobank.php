@@ -109,7 +109,7 @@ class Rabobank extends AbstractParser
      * Field 4: 1 character, capital code (not supported as of now)
      * Field 5: 15 digits including a comma, amount (group 4)
      * Field 6: character plus 3 digits or 4 characters 'NMSC', transaction type (group 5)
-     * Field 7: sometimes there is garbage in here like NONREF, EREF or MARF (group 6, optional)
+     * Field 7: sometimes there is garbage in here like NONREF, EREF or MARF, sometimes including forward-slashes and an unspecified code consisting of capitals and letters (group 6, optional)
      * Field 7: 8 to 24 characters, contra account number (group 7), note: version 2.4 of the MT940 Rabobank spec
      *          does not mention the garbage strings and only lists 16 characters, but that is not enough for most IBAN numbers,
      *          and too short for non-IBAN numbers, so now its 8 to 24
@@ -120,7 +120,7 @@ class Rabobank extends AbstractParser
     protected function contraAccountNumber(array $lines)
     {
         $this->logger->log(LOG_DEBUG, "Called contraAccountNumber with: " . print_r($lines, true));
-        if (!preg_match('/(\d{6})(\d{4})?((?:C|D)R?)([0-9,]{15})(N\d{3}|NMSC)([A-Z]+\s+)?([0-9A-Z]{8,24})/', $lines[0], $match)) {
+        if (!preg_match('/(\d{6})(\d{4})?((?:C|D)R?)([0-9,]{15})(N\d{3}|NMSC)([A-Z0-9\/]+\s+)?([0-9A-Z]{8,24})/', $lines[0], $match)) {
             $this->logger->log(LOG_WARNING, "Regex fail for contra account number this line: " . $lines[0]);
             return null;
         }
